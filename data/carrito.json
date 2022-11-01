@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "timestamp": 1664797135063,
+        "productos": [
+            {
+                "id_prod": "I1000",
+                "timestamp": "1664797135063",
+                "nombre": "GUITARRA CLASICA VALENCIA DE ESTUDIO TAMAÑO MINI (22) C102 COLOR NATURAL",
+                "descripcion": "Origen China - Cuerdas 6 - Tipo Equalizador: No - Corte: No - Mano: Diestro - Accesorio Incluido: No",
+                "precio": "20.748",
+                "codigo": "201220"
+            }
+        ]
+    },
+    {
+        "timestamp": 1665321382717,
+        "productos": [
+            {
+                "timestamp": 1665322766492,
+                "id_prod": "201230",
+                "nombre": "GUITARRA CLASICA VALENCIA DE ESTUDIO TAMAÑO MINI (22) C102 COLOR NATURAL",
+                "descripcion": "Origen China - Cuerdas 6 - Tipo Equalizador: No - Corte: No - Mano: Diestro - Accesorio Incluido: No",
+                "precio": "20.748"
+            }
+        ],
+        "id": 3
+    }
+]
