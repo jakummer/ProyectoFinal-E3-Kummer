@@ -1,16 +1,13 @@
-//import admin from 'firebase-admin'
 
-import FirebaseDetails from './config.js'
-import ContenedorMongo from "./contenedores/contenedorMongo.js";
 import DAOProductoMongo from './contenedores/daos/productos/DAOProductoMongo.js';
+import DAOProductoFirebase from './contenedores/daos/productos/DAOProductoFirebase.js';
 
 
-
-(async () => {
-    const productoMongo = new DAOProductoMongo();
-    console.log(await productoMongo.findAll());
-
-// });
+//* MONGO
+//* create
+// (async () => {
+//     const productoMongo = new DAOProductoMongo();
+//     console.log(await productoMongo.findAll());
 
 
 // console.log(await productoMongo.save({
@@ -21,10 +18,11 @@ import DAOProductoMongo from './contenedores/daos/productos/DAOProductoMongo.js'
 //     stock: 3
 // }));
 
-
-//console.log(await productoMongo.findById('63615381c874c1701b9161fc'));
+//* read
 //console.log(await productoMongo.findAll());
-//console.log(await productoMongo.deleteById('63615381c874c1701b9161fc'));
+//console.log(await productoMongo.findById('63615381c874c1701b9161fc'));
+
+//* update
 // console.log(await productoMongo.update({
 // _id: '635efa5c9024227b9ed578ac',
 // nombre: "TROMPETA YAMAHA BB CON TERMINACIÓN EN LACA DORADA",
@@ -35,64 +33,51 @@ import DAOProductoMongo from './contenedores/daos/productos/DAOProductoMongo.js'
 // }));
 
 
-
-})();
-
-
-
-
-//console.log(await productoMongo.save({name: 'José', pokemon: []}));
-
-
-
-// (async () => {
-// admin.initializeApp({
-// credential: admin.credential.cert(FirebaseDetails),
-// databaseURL:' https://ecommerce-6bfd3.firebaseio.com',
-
-// });
-
-
-// console.log('conectados');
-
-// const db = admin.firestore();
-
-// const Productos = db.collection('productos');
-
-
-// //CRUD
-
-
-// //CREATE
-// // await Productos.add(
-// //     {
-// //         idProd: "I1000",
-// //         timestamp: 1665242690384,
-// //         nombre: "GUITARRA CLASICA VALENCIA DE ESTUDIO TAMAÑO MINI (22) C102 COLOR NATURAL",
-// //         descripcion: "Origen China - Cuerdas 6 - Tipo Equalizador: No - Corte: No - Mano: Diestro - Accesorio Incluido: No",
-// //         precio: "20.748",
-// //         urlfoto: "../assets/images/guitarra-clasica-valencia-de-estudio-tamano-mini-22-vc102-color-natural.jpg",
-// //         stock: 15
-// //     });
-
-
-// //READ
-// //Listado Total
-// // const ListadoProductos = await Productos.get();
-// // ListadoProductos.forEach((doc) => console.log({id: doc.id, ...doc.data() }));
-
-
-// //Listado por Producto
-// // const Producto = await Productos.doc('PueSmqBJ9cUIMqIRLmu7').get()
-// // console.log({id: Producto.id, ...Producto.data() });
-
-
-
-// //UPDATE
-// //await Productos.doc('57PpQ2FsLHW9lPE6xUSy').update({precio : "28.400"});
-
-// //DELETE
-// await Productos.doc('57PpQ2FsLHW9lPE6xUSy').delete();
-
+//* delete
+//console.log(await productoMongo.deleteById('63615381c874c1701b9161fc'));
 
 // })();
+
+
+
+
+//* FIREBASE
+//* create
+/* (async () => {
+ 
+    const productoFirebase = new DAOProductoFirebase();
+    console.log(await productoFirebase.save({
+             nombre: "FLAUTA TRAVERSA CONN CON TERMINACIÓN EN LACA DORADA",
+             descripcion: "Flauta Traversa Conn en Plateado - Origen: Alemania",
+             precio: 34000, 
+             urlfoto: "../assets/images/flauta-traversa-conn.jpg",
+             stock: 3
+        }));
+        
+})(); */
+
+
+//* read
+// listado total
+/* (async () => {
+    const productoFirebase = new DAOProductoFirebase();
+    console.log(await productoFirebase.findAll());
+
+ 
+})(); */
+
+// listado por id producto
+/* (async () => {
+    const productoFirebase = new DAOProductoFirebase();
+    console.log(await productoFirebase.findById('DbTLAp7yyGHxz8eyVx5b'));
+
+ 
+})(); */
+
+//* update
+/* (async () => {
+    const productoFirebase = new DAOProductoFirebase();
+    console.log(await productoFirebase.updateById('DbTLAp7yyGHxz8eyVx5b'));
+
+ 
+})();  */

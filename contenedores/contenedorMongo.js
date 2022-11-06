@@ -9,6 +9,31 @@ class ContenedorMongo {
 }
 
 
+
+//* create
+async save(newDoc){
+	try {
+        const doc = await this.db.create(newDoc);
+        return doc;
+    }catch(e){
+        throw new Error(e);
+    }
+}
+
+
+//* read
+// listado total
+async findAll(){
+	try {
+        const data = await this.db.find({});
+        return data;
+    }catch(e){
+        throw new Error(e);
+    }
+    
+}
+
+//listado por producto
 async findById(id){
     try {
         const data = await this.db.findOne({_id:id});
@@ -20,27 +45,7 @@ async findById(id){
 }
 
 
-async findAll(){
-	try {
-        const data = await this.db.find({});
-        return data;
-    }catch(e){
-        throw new Error(e);
-    }
-    
-}
-
-
-async save(newDoc){
-	try {
-        const doc = await this.db.create(newDoc);
-        return doc;
-    }catch(e){
-        throw new Error(e);
-    }
-}
-
-
+//* update
 async update(elem){
     try {
         await this.db.replaceOne({_id: elem._id}, elem);
@@ -52,7 +57,7 @@ async update(elem){
 }
 
 
-
+//* delete
 async deleteById(id){
     try {
         const {n, nDeleted} = await this.db.deleteOne({_id: id});
@@ -62,8 +67,6 @@ async deleteById(id){
     }
 
 }
-
-
 
 
 async deleteAll() {
