@@ -3,8 +3,7 @@ import ContenedorFirebase from "../../contenedorFirebase.js";
 
 class DAOProductoFirebase extends ContenedorFirebase {
 
- 
-        constructor(){
+         constructor(){
             super("productos", {
             nombre: String,
             descripcion: String,

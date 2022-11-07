@@ -11,8 +11,8 @@ class ContenedorFirebase {
             databaseURL:' https://ecommerce-6bfd3.firebaseio.com',
             });
 
-            const db = admin.firestore();
-            const productos = db.collection('productos');
+          /*   const db = admin.firestore();
+            const productos = db.collection('productos'); */
         }
     
    
@@ -53,7 +53,10 @@ class ContenedorFirebase {
             const productos = db.collection('productos');
 
             const producto = await productos.doc(id).get();
-            console.log({id: producto.id, ...producto.data() });
+            console.log({ id: producto.id, ...producto.data() });
+
+            const data = await this.db.findOne({_id:id});
+            return data;
 
             }catch(e){
                 throw new Error(e);   
@@ -62,20 +65,51 @@ class ContenedorFirebase {
 
 
         //* update
-        async updateById(id){
+        async update(elem){
             try {
+            
+            // const productoUpdate = await productos.doc(id).update({precio : "65800"});
+            // const producto = await productos.doc(id).get();
+            // console.log({id: producto.id, ...producto.data() });
+
+
             const db = admin.firestore();
             const productos = db.collection('productos');
 
-            const productoUpdate = await productos.doc(id).update({precio : "28800"});
-            const producto = await productos.doc(id).get();
-            console.log({id: producto.id, ...producto.data() });
+            const productoUpdate = await productos.doc(elem._id).update({
+                //_id: elem.id,
+                nombre: elem.nombre,
+                descripcion: elem.descripcion,
+                precio: elem.precio, 
+                urlfoto: elem.urlfoto,
+                stock: elem.stock
+            
+            });
+
+            const producto = await productos.doc(elem._id).get();
+            console.log({_id: producto._id, ...producto.data() });
      
 
             }catch(e){
                 throw new Error(e);   
             }
         }
+
+
+        //* delete
+        async deleteById(id){
+            try {
+                const db = admin.firestore();
+                const productos = db.collection('productos');
+
+                const producto = await productos.doc(id).delete();
+                //return nDeleted > 0;
+
+            }catch(e){
+                throw new Error(e);
+            }
+
+            }
 
 }
 
