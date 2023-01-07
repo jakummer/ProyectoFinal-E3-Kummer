@@ -1,41 +1,45 @@
-import daos from './contenedores/daos/index.js';
+import express from "express";
+import cookieParser from "cookie-parser";
 
-(async () => {
-   
-   
-    const { productoDAO } = await daos();
-    
-    console.log(productoDAO);
+const expressApp = express();
+//* secreto / llave privada
+//* array con strings, string
+expressApp.use(cookieParser("qw0d3wj9032j09322390"));
 
-    //create
-   /*  await productoDAO.save({
-        nombre: "TROMBON A LLAVES CONN CON TERMINACIÓN EN LACA DORADA",
-        descripcion: "Trombón a llaves Conn - Origen: Alemania",
-        precio: 54000, 
-        urlfoto: "../assets/images/flauta-traversa-conn.jpg",
-        stock: 3
-   }); */
+expressApp.use((req, res, next) => {
+  // * cookies normales
+  console.log(req.cookies);
+  // * cookies firmadas
+  console.log(req.signedCookies);
+  next();
+});
 
-    //read
-    // console.log(await productoDAO.findAll());
-   
-    //console.log(await productoDAO.findById('63698fe6c813fd346a8c49ed'));
+expressApp.get("/", (req, res) => {
+  // * Cookie: coder=house; token=xxxxxxxx
+  // {coder: 'houser', token: ''}
+  //  req.headers.cookie
+  res.send({
+    logged: "jwt" in req.cookies ? true : false,
+    cookies: req.cookies,
+    signed: req.signedCookies,
+  });
+});
 
+expressApp.get("/cookie", (req, res) => {
+  // * proviene de express
+  // ? s%3Aejjewoij2309u32.23423wqewqewqqewwqe.73QsNSg4FgFZv1Bynaw7n%2BS8XFCQJqIzoChHNaPW9sw
+  res.cookie("jwt", "ejjewoij2309u32.23423wqewqewqqewwqe", { signed: true });
+  res.cookie("recordar", "true", {});
+  res.cookie("config", { color: "rojo", modo: "oscuro" });
+  res.send("set!");
+});
 
-    //update
-   /* await productoDAO.update({
-            _id: '6CiQbJGJA2Z82aNf6JyO',
-            nombre: "TROMBON A LLAVES CONN CON TERMINACIÓN EN LACA DORADA",
-            descripcion: "Trombón a llaves Conn - Origen: Alemania",
-            precio: 65000, 
-            urlfoto: "../assets/images/flauta-traversa-conn.jpg",
-            stock: 3
-    });
- */
+expressApp.get("/logout", (req, res) => {
+  // * proviene de express
+  res.clearCookie("jwt");
+  res.send(req.cookies);
+});
 
-
-    //delete
-    console.log(await productoDAO.deleteById('6CiQbJGJA2Z82aNf6JyO'));
-    
-
-})();
+expressApp.listen(8081, () => {
+  console.log("conectado!");
+});
