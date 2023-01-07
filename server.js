@@ -41,12 +41,12 @@ const { pathname: root } = new URL(".", import.meta.url);
 const authMod = (req, res, next) => {
   req.session.rank >= 1
     ? next()
-    : res.status(401).send({ rango: req.session.rank, error: "Sin permisos" });
+    : res.status(401).send({ rango: req.session.rank, error: "Acceso no autorizado" });
 };
 const authAdmin = (req, res, next) => {
   req.session.rank >= 2
     ? next()
-    : res.status(401).send({ rango: req.session.rank, error: "Sin permisos" });
+    : res.status(401).send({ rango: req.session.rank, error: "Acceso no autorizado" });
 };
 
 app.get("/admin", authAdmin, (req, res) => {
