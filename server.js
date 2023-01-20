@@ -4,7 +4,9 @@ import bodyParser from "body-parser";
 import MongoStore from "connect-mongo";
 import DAOUsuarios from "./daos/UsuariosDAO.js";
 import logger from "./logger.js";
-import crypto from "crypto"
+import crypto from "crypto";
+import bcrypt from "bcryptjs"
+//import encrypt from "./helpers/handleBcrypt.js"
 
 const app = express();
 app.use(express.json());
@@ -50,10 +52,10 @@ const authAdmin = (req, res, next) => {
 };
 
 app.get("/admin", authAdmin, (req, res) => {
-  res.send("Hola admin!");
+  res.send("Bienvenido admin!");
 });
 app.get("/mod", authMod, (req, res) => {
-  res.send("Hola mod!");
+  res.send("Bienvenido mod!");
 });
 
 // ROOT
@@ -77,12 +79,30 @@ app.post("/", async (req, res) => {
 
   // * rango [admin, mod]
   try {
-    const { username, password } = req.body;
+    /* const { username, password } = req.body;
     const usuario = await MongoUsers.listar(username, password);
     console.log(usuario);
     req.session.rank = usuario.rank;
     req.session.usuario = username;
+    res.redirect("/"); */
+
+    const { username, password } = req.body;
+    const usuario = await MongoUsers.listarPassword(username);
+
+    console.log(usuario.password);
+
+    const passwordCompare = await bcrypt.compare(password, usuario.password);
+    if (!passwordCompare){
+      res.redirect("/?error=true");
+    }
+    console.log(passwordCompare);
+
+    //const usuario = await MongoUsers.listar(username, password);
+    req.session.rank = usuario.rank;
+    req.session.usuario = username; 
     res.redirect("/");
+
+
   } catch (e) {
     res.redirect("/?error=true");
   }
@@ -91,24 +111,24 @@ app.post("/", async (req, res) => {
 
 // * registro de usuario
 app.post("/register", async (req, res) => {
- /*  const { username, password } = req.body;
-const salt = crypto.randomBytes(128).toString("base64");
-const hash = crypto.pbkdf2Sync(password, salt, 100000, 512, "sha512");
-
-password = {salt, hash};
-
+/* 
+const { username, password } = req.body;
   await MongoUsers.guardar({ username, password });
   req.session.usuario = username;
   req.session.rank = 0;
-  res.redirect("/");  */
+  res.redirect("/");  
+ */
+  
 
+const { username, password, nombreapel, direccion, telefono, mail, edad, fotoavatar } = req.body;
+ const passwordHash = await bcrypt.hash(password, 12);
 
-  const { username, password } = req.body;
-  await MongoUsers.guardar({ username, password });
-  req.session.usuario = username;
-  req.session.rank = 0;
-  res.redirect("/"); 
+await MongoUsers.guardar({ username, password: passwordHash, nombreapel, direccion, telefono, mail, edad, fotoavatar });
 
+ req.session.usuario = username;
+ req.session.rank = 0;
+ res.redirect("/");  
+ 
 
 
 });
@@ -143,21 +163,6 @@ app.get('*', (req, res) => {
 
 
 app.listen(8081, () =>
-  logger.info(`Servidor escuchando en puerto 8081.`)
+  logger.info(`*** Servidor escuchando en puerto 8081 ***`)
 );
-
-
-/* function isPrime(num){
-  if ([2, 3].includes(num)) return true;
-  else if ([2, 3].some((n) => num % n == 0)) return false;
-  else {
-    let i = 5,  w = 2;
-    while (i ** 2 <= num) {
-      if (num % i == 0) return false;
-      i += w
-      w = 6 - w
-    }
-  }
-  return true
-} */
 
